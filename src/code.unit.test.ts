@@ -1,6 +1,8 @@
-import { containsCode, groupComments } from "./code";
+import { containsCode, fragmentParserOptions, groupComments } from "./code";
 import type { CommentFacts } from "./comment";
+import tsParser from "@typescript-eslint/parser";
 import * as espree from "espree";
+import type { Linter } from "eslint";
 import type { Comment } from "estree";
 
 function lineFact(value: string, line: number, startsLine = true): CommentFacts {
@@ -70,5 +72,41 @@ describe("containsCode", () => {
 
 		expect(containsCode(group, parser, parserOptions)).toBe(true);
 		expect(containsCode({ members: [], source: "function f() {" }, parser, parserOptions)).toBe(false);
+	});
+
+	it("detects code when type-aware parser options are present", () => {
+		const typeAwareOptions = {
+			ecmaVersion: "latest" as const,
+			sourceType: "module" as const,
+			projectService: true,
+		};
+
+		expect(
+			containsCode(
+				{ members: [], source: "const y = 1;" },
+				tsParser as Linter.Parser,
+				typeAwareOptions as Linter.ParserOptions,
+			),
+		).toBe(true);
+	});
+});
+
+describe("fragmentParserOptions", () => {
+	it("strips type-aware keys and keeps the rest", () => {
+		const stripped = fragmentParserOptions({
+			ecmaVersion: "latest",
+			sourceType: "module",
+			project: true,
+			projectService: true,
+			programs: [],
+			EXPERIMENTAL_useProjectService: true,
+		} as Linter.ParserOptions);
+
+		expect(stripped).toEqual({
+			ecmaVersion: "latest",
+			sourceType: "module",
+		});
+		expect("project" in stripped).toBe(false);
+		expect("projectService" in stripped).toBe(false);
 	});
 });

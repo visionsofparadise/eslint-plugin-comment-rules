@@ -3,5 +3,5 @@
 	"entry": ["src/index.ts"],
 	"project": ["src/**/*.{ts,tsx}"],
 	"ignore": [],
-	"ignoreDependencies": ["@typescript-eslint/parser", "prettier"]
+	"ignoreDependencies": ["prettier", "eslint-plugin-comment-rules"]
 }

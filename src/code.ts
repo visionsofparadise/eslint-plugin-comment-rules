@@ -86,17 +86,35 @@ function unwrapParser(parser: Linter.Parser): Linter.Parser {
 	return parser;
 }
 
+export function fragmentParserOptions(parserOptions: Linter.ParserOptions): Linter.ParserOptions {
+	const {
+		project: _project,
+		projectService: _projectService,
+		programs: _programs,
+		EXPERIMENTAL_useProjectService: _experimentalUseProjectService,
+		...rest
+	} = parserOptions as Linter.ParserOptions & {
+		project?: unknown;
+		projectService?: unknown;
+		programs?: unknown;
+		EXPERIMENTAL_useProjectService?: unknown;
+	};
+
+	return rest;
+}
+
 function parseFragment(parser: Linter.Parser, source: string, parserOptions: Linter.ParserOptions): Node {
 	const active = unwrapParser(parser);
+	const options = fragmentParserOptions(parserOptions);
 
 	if ("parseForESLint" in active && typeof active.parseForESLint === "function") {
-		const result = active.parseForESLint(source, parserOptions) as { ast: Node };
+		const result = active.parseForESLint(source, options) as { ast: Node };
 
 		return result.ast;
 	}
 
 	if ("parse" in active && typeof active.parse === "function") {
-		return active.parse(source, parserOptions) as Node;
+		return active.parse(source, options) as Node;
 	}
 
 	throw new Error("parser exposes neither parseForESLint nor parse");

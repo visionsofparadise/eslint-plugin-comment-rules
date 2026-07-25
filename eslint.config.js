@@ -5,6 +5,7 @@ import js from "@eslint/js";
 import stylistic from "@stylistic/eslint-plugin";
 import barrelFiles from "eslint-plugin-barrel-files";
 import checkFile from "eslint-plugin-check-file";
+import commentRules from "eslint-plugin-comment-rules";
 import importX from "eslint-plugin-import-x";
 import globals from "globals";
 import tseslint from "typescript-eslint";
@@ -53,6 +54,7 @@ export default tseslint.config(
 			"barrel-files": barrelFiles,
 			"check-file": checkFile,
 			"@stylistic": stylistic,
+			"comment-rules": commentRules,
 		},
 		settings: {
 			"import-x/resolver": {
@@ -62,6 +64,8 @@ export default tseslint.config(
 		rules: {
 			"prefer-arrow-callback": "error",
 			"arrow-body-style": ["error", "as-needed"],
+
+			"comment-rules/no-restricted-comments": ["error", "docs"],
 
 			"@typescript-eslint/naming-convention": [
 				"error",

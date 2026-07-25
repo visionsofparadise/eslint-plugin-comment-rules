@@ -1,10 +1,15 @@
 import rule from "./rule";
 import type { ESLint, Linter } from "eslint";
 
+/* eslint-disable @typescript-eslint/naming-convention, @stylistic/padding-line-between-statements -- tsup define injects these from package.json */
+declare const __PACKAGE_NAME__: string;
+declare const __PACKAGE_VERSION__: string;
+/* eslint-enable @typescript-eslint/naming-convention, @stylistic/padding-line-between-statements */
+
 const plugin = {
 	meta: {
-		name: "eslint-plugin-comment-rules",
-		version: "0.1.0",
+		name: __PACKAGE_NAME__,
+		version: __PACKAGE_VERSION__,
 	},
 	rules: {
 		"no-restricted-comments": rule,
