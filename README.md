@@ -1,0 +1,117 @@
+# eslint-plugin-comment-rules
+
+Express a comment policy as ESLint configuration. One rule, `comment-rules/no-restricted-comments`, filters every comment kind (line, block, JSDoc, shebang) by kind, position, content, AST selector, and more, with fixers that delete or rewrite.
+
+For JSDoc *content* (tags, types, descriptions), use [`eslint-plugin-jsdoc`](https://github.com/gajus/eslint-plugin-jsdoc) as a companion. This package owns whether a comment may exist and where.
+
+## Install
+
+```bash
+npm install -D eslint-plugin-comment-rules
+```
+
+Requires ESLint 9 or 10 and Node `^18.18.0 || ^20.9.0 || >=21.1.0`. Flat config only.
+
+## Configure
+
+### Named policy
+
+```js
+// eslint.config.js
+import commentRules from "eslint-plugin-comment-rules";
+
+export default [
+	{
+		plugins: {
+			"comment-rules": commentRules,
+		},
+		rules: {
+			"comment-rules/no-restricted-comments": ["error", "docs"],
+		},
+	},
+];
+```
+
+Or use a shipped flat config:
+
+```js
+import commentRules from "eslint-plugin-comment-rules";
+
+export default [
+	commentRules.configs.docs,
+];
+```
+
+Policies: `none` (ban everything), `safe` (shebang + ESLint inline config), `docs` (`safe` plus `FIX`/`TODO`, machine directives, and multiline JSDoc in doc position).
+
+### Custom entries
+
+```js
+"comment-rules/no-restricted-comments": ["error", [
+	{ action: "delete" },
+	{ shebang: true, action: "allow" },
+	{ terms: ["TODO"], location: "start", action: "allow" },
+]]
+```
+
+Last matching entry wins. Criteria within an entry conjoin.
+
+### CommonJS projects
+
+On Node below the `require(esm)` range, name the config `eslint.config.mjs` so ESLint loads it as ESM and can default-import this package.
+
+### Mixed severity
+
+Register the plugin under two keys:
+
+```js
+plugins: {
+	comments: commentRules,
+	"comments-warn": commentRules,
+},
+rules: {
+	"comments/no-restricted-comments": ["error", [/* hard bans */]],
+	"comments-warn/no-restricted-comments": ["warn", [/* soft ones */]],
+},
+```
+
+## Capabilities
+
+| Capability | Key / form | Covered by tests |
+| --- | --- | --- |
+| Line comments | `line: true` | yes |
+| Block comments | `block: true` | yes |
+| JSDoc blocks | `jsdoc: true` | yes |
+| Shebang | `shebang: true` | yes |
+| Single / multi line | `lines: "single" \| "multi"` | yes |
+| Position facts | `position: "above" \| "beside" \| "file-start" \| "dangling"` (or array, all required) | yes |
+| Terms | `terms`, `location`, `decoration` (same model as `no-warning-comments`) | yes |
+| Markers | `markers` (match after the opener) | yes |
+| Pattern | `pattern` (regex source) | yes |
+| AST selector | `selector` (esquery on the leading node) | yes |
+| Inline config | `inlineConfig: true` | yes |
+| Commented-out code | `code: true` | yes |
+| Custom message | `message` | yes |
+| Allow | `action: "allow"` | yes |
+| Report | `action: "report"` | yes |
+| Delete (fix) | `action: "delete"` | yes |
+| Replace (fix) | `action: "replace"`, `replacement` with `$1` | yes |
+| Policy `none` | option `"none"` | yes |
+| Policy `safe` | option `"safe"` | yes |
+| Policy `docs` | option `"docs"` | yes |
+| Schema: missing option | throws | yes |
+| Schema: unknown policy | throws | yes |
+| Schema: unknown key | throws | yes |
+| `require()` / default `import` interop | package entry | yes (integration) |
+
+## Policies in detail
+
+| Policy | Permits |
+| --- | --- |
+| `none` | nothing |
+| `safe` | shebang; ESLint inline config (`eslint-disable*`, `globals`, `exported`, …) |
+| `docs` | `safe`, plus `FIX`/`TODO` at start, markers (`@ts-expect-error`, `prettier-ignore`, `istanbul ignore`, …), and multiline JSDoc leading a module/class/interface/type/namespace/enum member |
+
+## License
+
+ISC

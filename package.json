@@ -1,0 +1,78 @@
+{
+	"name": "eslint-plugin-comment-rules",
+	"version": "0.1.0",
+	"description": "ESLint plugin for expressing a comment policy as configuration",
+	"type": "module",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js",
+			"default": "./dist/index.js"
+		}
+	},
+	"files": [
+		"dist"
+	],
+	"sideEffects": false,
+	"scripts": {
+		"check": "concurrently \"eslint . --fix --cache\" \"tsc --noEmit\"",
+		"lint": "eslint . --fix --cache",
+		"lint:fix": "eslint . --fix",
+		"format": "prettier --write .",
+		"unit": "vitest run unit",
+		"integration": "vitest run integration",
+		"build": "tsup"
+	},
+	"keywords": [
+		"eslint",
+		"eslintplugin",
+		"eslint-plugin",
+		"comments"
+	],
+	"author": "Matt Cavender",
+	"license": "ISC",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/visionsofparadise/eslint-plugin-comment-rules.git"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"engines": {
+		"node": "^18.18.0 || ^20.9.0 || >=21.1.0"
+	},
+	"peerDependencies": {
+		"eslint": "^9.0.0 || ^10.0.0"
+	},
+	"dependencies": {
+		"esquery": "^1.7.0"
+	},
+	"devDependencies": {
+		"@eslint/compat": "^2.1.0",
+		"@eslint/js": "^10.0.1",
+		"@stylistic/eslint-plugin": "^5.10.0",
+		"@types/esquery": "^1.5.4",
+		"@types/estree": "^1.0.9",
+		"@types/node": "^26.1.1",
+		"@typescript-eslint/parser": "^8.65.0",
+		"concurrently": "^10.0.4",
+		"eslint": "^10.8.0",
+		"eslint-config-prettier": "^10.1.8",
+		"eslint-import-resolver-typescript": "^4.4.5",
+		"eslint-plugin-barrel-files": "^3.0.1",
+		"eslint-plugin-check-file": "^3.3.2",
+		"eslint-plugin-import-x": "^4.17.1",
+		"espree": "^11.2.0",
+		"globals": "^17.7.0",
+		"knip": "^6.29.0",
+		"prettier": "^3.9.6",
+		"tsup": "^8.5.1",
+		"typescript": "~5.9.0",
+		"typescript-eslint": "^8.65.0",
+		"vitest": "^4.1.10"
+	},
+	"allowScripts": {
+		"esbuild@0.27.7": true,
+		"unrs-resolver@1.12.2": true
+	}
+}
