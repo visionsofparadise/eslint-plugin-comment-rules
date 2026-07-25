@@ -1,6 +1,6 @@
 {
 	"name": "eslint-plugin-comment-rules",
-	"version": "0.1.3",
+	"version": "0.1.4",
 	"description": "ESLint plugin for expressing a comment policy as configuration",
 	"type": "module",
 	"exports": {
