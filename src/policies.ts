@@ -18,6 +18,7 @@ const docsMarkers = [
 	"#__PURE__",
 	"webpackChunkName",
 	"@vite-ignore",
+	"/ <reference",
 ] as const;
 
 const none: ReadonlyArray<Entry> = [{ action: "delete" }];

@@ -52,6 +52,14 @@ ruleTester.run("no-restricted-comments", rule, {
 			options: ["docs"],
 		},
 		{
+			code: '/// <reference types="vite/client" />\nexport const x = 1;',
+			options: ["docs"],
+		},
+		{
+			code: '/// <reference path="./globals.d.ts" />\nexport const x = 1;',
+			options: ["docs"],
+		},
+		{
 			code: "// note\nconst x = 1;",
 			options: [[{ action: "delete" }, { line: true, action: "allow" }]],
 		},
@@ -145,6 +153,12 @@ ruleTester.run("no-restricted-comments", rule, {
 		},
 		{
 			code: "// prose\nconst x = 1;",
+			options: ["docs"],
+			errors: [{ messageId: "restricted" }],
+			output: "const x = 1;",
+		},
+		{
+			code: "// see the <reference> in the design doc\nconst x = 1;",
 			options: ["docs"],
 			errors: [{ messageId: "restricted" }],
 			output: "const x = 1;",

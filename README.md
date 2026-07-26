@@ -110,7 +110,7 @@ rules: {
 | --- | --- |
 | `none` | nothing |
 | `safe` | shebang; ESLint inline config (`eslint-disable*`, `globals`, `exported`, …) |
-| `docs` | `safe`, plus `FIX`/`TODO` at start (leading `*` decoration allowed), markers (`@ts-expect-error`, `prettier-ignore`, `istanbul ignore`, …), and the two JSDoc cases below |
+| `docs` | `safe`, plus `FIX`/`TODO` at start (leading `*` decoration allowed), markers (`@ts-expect-error`, `prettier-ignore`, `istanbul ignore`, TypeScript's `/// <reference …>`, …), and the two JSDoc cases below |
 
 `docs` permits a multiline JSDoc block on two grounds, and prose in JSDoc delimiters satisfies neither:
 
