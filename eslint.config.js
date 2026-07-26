@@ -245,7 +245,7 @@ export default tseslint.config(
 				"error",
 				{
 					"src/**/": "KEBAB_CASE",
-					"src/**/components/**/": "PASCAL_CASE",
+					"src/**/Components/**/": "PASCAL_CASE",
 				},
 			],
 

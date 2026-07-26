@@ -42,7 +42,7 @@ export default [
 ];
 ```
 
-Policies: `none` (ban everything), `safe` (shebang + ESLint inline config), `docs` (`safe` plus `FIX`/`TODO`, machine directives, and multiline JSDoc in doc position).
+Policies: `none` (ban everything), `safe` (shebang + ESLint inline config), `docs` (`safe` plus `FIX`/`TODO`, machine directives, and multiline JSDoc that carries a block tag or documents a property).
 
 ### Custom entries
 
@@ -110,7 +110,16 @@ rules: {
 | --- | --- |
 | `none` | nothing |
 | `safe` | shebang; ESLint inline config (`eslint-disable*`, `globals`, `exported`, …) |
-| `docs` | `safe`, plus `FIX`/`TODO` at start, markers (`@ts-expect-error`, `prettier-ignore`, `istanbul ignore`, …), and multiline JSDoc leading a module/class/interface/type/namespace/enum member |
+| `docs` | `safe`, plus `FIX`/`TODO` at start (leading `*` decoration allowed), markers (`@ts-expect-error`, `prettier-ignore`, `istanbul ignore`, …), and the two JSDoc cases below |
+
+`docs` permits a multiline JSDoc block on two grounds, and prose in JSDoc delimiters satisfies neither:
+
+| Ground | Requires | Rationale |
+| --- | --- | --- |
+| It uses JSDoc syntax | a block tag (`@param`, `@returns`, `@type`, …) on its own line, in doc position | a tag is the author declaring the block documents the API rather than explaining the code |
+| It documents a property | an anchor of `TSPropertySignature`, `PropertyDefinition`, `TSEnumMember`, or `Property` | JSDoc offers no tag for a property description, so a tagless block is the only way to write one |
+
+A tagless block on a function, method, class, interface, type alias, or plain binding is a plain comment wearing JSDoc delimiters, and is deleted.
 
 ## License
 

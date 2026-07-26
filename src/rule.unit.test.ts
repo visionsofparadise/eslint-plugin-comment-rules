@@ -44,7 +44,11 @@ ruleTester.run("no-restricted-comments", rule, {
 			options: ["docs"],
 		},
 		{
-			code: "/**\n * Module docs\n */\nexport const plugin = 1;",
+			code: "/**\n * Module docs\n * @type {number}\n */\nexport const plugin = 1;",
+			options: ["docs"],
+		},
+		{
+			code: "/*\n * TODO: starred tag keeps its exemption\n */\nconst x = 1;",
 			options: ["docs"],
 		},
 		{
@@ -162,6 +166,24 @@ ruleTester.run("no-restricted-comments", rule, {
 			options: ["docs"],
 			errors: [{ messageId: "restricted" }],
 			output: "const x = 1;\nfunction g() {}",
+		},
+		{
+			code: "/**\n * Tagless prose on an exported binding.\n */\nexport const plugin = 1;",
+			options: ["docs"],
+			errors: [{ messageId: "restricted" }],
+			output: "export const plugin = 1;",
+		},
+		{
+			code: "/**\n * Tagless prose on a function.\n */\nexport function f(a) {\n  return a;\n}",
+			options: ["docs"],
+			errors: [{ messageId: "restricted" }],
+			output: "export function f(a) {\n  return a;\n}",
+		},
+		{
+			code: "class C {\n  /**\n   * Tagless prose on a method.\n   */\n  m(a) {\n    return a;\n  }\n}",
+			options: ["docs"],
+			errors: [{ messageId: "restricted" }],
+			output: "class C {\n  m(a) {\n    return a;\n  }\n}",
 		},
 		{
 			code: "// line only\nconst x = 1;",
@@ -338,7 +360,27 @@ ruleTester.run("no-restricted-comments", rule, {
 tsRuleTester.run("no-restricted-comments typescript", rule, {
 	valid: [
 		{
-			code: "/**\n * Module docs\n */\nexport const plugin = 1;",
+			code: "/**\n * Module docs\n * @param root - the directory\n */\nexport const plugin = (root: string) => root;",
+			options: ["docs"],
+		},
+		{
+			code: "export interface I {\n\t/**\n\t * The root directory.\n\t */\n\troot: string;\n}",
+			options: ["docs"],
+		},
+		{
+			code: 'class C {\n\t/**\n\t * The root directory.\n\t */\n\treadonly root = "x";\n}',
+			options: ["docs"],
+		},
+		{
+			code: "enum E {\n\t/**\n\t * The first one.\n\t */\n\tFirst = 1,\n}",
+			options: ["docs"],
+		},
+		{
+			code: "type T = {\n\t/**\n\t * The root directory.\n\t */\n\troot: string;\n};",
+			options: ["docs"],
+		},
+		{
+			code: 'const o = {\n\t/**\n\t * The root directory.\n\t */\n\troot: "x",\n};',
 			options: ["docs"],
 		},
 	],
@@ -348,6 +390,30 @@ tsRuleTester.run("no-restricted-comments typescript", rule, {
 			options: ["docs"],
 			errors: [{ messageId: "restricted" }],
 			output: "export const plugin = 1;",
+		},
+		{
+			code: "/**\n * Tagless prose on an exported binding.\n */\nexport const plugin = 1;",
+			options: ["docs"],
+			errors: [{ messageId: "restricted" }],
+			output: "export const plugin = 1;",
+		},
+		{
+			code: "/**\n * Shape of the config.\n */\nexport interface I {\n\ta: string;\n}",
+			options: ["docs"],
+			errors: [{ messageId: "restricted" }],
+			output: "export interface I {\n\ta: string;\n}",
+		},
+		{
+			code: "/**\n * Shape of the config.\n */\nexport type T = {\n\ta: string;\n};",
+			options: ["docs"],
+			errors: [{ messageId: "restricted" }],
+			output: "export type T = {\n\ta: string;\n};",
+		},
+		{
+			code: "interface I {\n\t/**\n\t * Tagless prose on a method signature.\n\t */\n\tm(a: string): string;\n}",
+			options: ["docs"],
+			errors: [{ messageId: "restricted" }],
+			output: "interface I {\n\tm(a: string): string;\n}",
 		},
 	],
 });
