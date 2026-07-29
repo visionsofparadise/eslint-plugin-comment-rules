@@ -44,6 +44,14 @@ ruleTester.run("no-restricted-comments", rule, {
 			options: ["docs"],
 		},
 		{
+			code: "// TODO: later\nconst x = 1;",
+			options: ["docs-report"],
+		},
+		{
+			code: "/**\n * Module docs\n * @type {number}\n */\nexport const plugin = 1;",
+			options: ["docs-report"],
+		},
+		{
 			code: "/**\n * Module docs\n * @type {number}\n */\nexport const plugin = 1;",
 			options: ["docs"],
 		},
@@ -156,6 +164,18 @@ ruleTester.run("no-restricted-comments", rule, {
 			options: ["docs"],
 			errors: [{ messageId: "restricted" }],
 			output: "const x = 1;",
+		},
+		{
+			code: "// unrecoverable prose\nconst x = 1;",
+			options: ["docs"],
+			errors: [{ messageId: "restricted" }],
+			output: "const x = 1;",
+		},
+		{
+			code: "// unrecoverable prose\nconst x = 1;",
+			options: ["docs-report"],
+			errors: [{ messageId: "restricted" }],
+			output: null,
 		},
 		{
 			code: "// see the <reference> in the design doc\nconst x = 1;",

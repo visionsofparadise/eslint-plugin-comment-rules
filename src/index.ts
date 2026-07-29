@@ -17,7 +17,7 @@ const plugin = {
 	configs: {} as Record<string, Linter.Config>,
 } satisfies ESLint.Plugin;
 
-function policyConfig(name: "none" | "safe" | "docs"): Linter.Config {
+function policyConfig(name: "none" | "safe" | "docs" | "docs-report"): Linter.Config {
 	return {
 		name: `comment-rules/${name}`,
 		plugins: {
@@ -32,6 +32,7 @@ function policyConfig(name: "none" | "safe" | "docs"): Linter.Config {
 plugin.configs.none = policyConfig("none");
 plugin.configs.safe = policyConfig("safe");
 plugin.configs.docs = policyConfig("docs");
+plugin.configs["docs-report"] = policyConfig("docs-report");
 
 export default plugin;
 export { plugin as "module.exports" };

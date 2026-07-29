@@ -50,10 +50,13 @@ const docs: ReadonlyArray<Entry> = [
 	},
 ];
 
+const docsReport: ReadonlyArray<Entry> = [{ action: "report" }, ...docs.slice(1)];
+
 export const policies = {
 	none,
 	safe,
 	docs,
+	"docs-report": docsReport,
 } as const;
 
 export type PolicyName = keyof typeof policies;

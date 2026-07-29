@@ -42,7 +42,9 @@ export default [
 ];
 ```
 
-Policies: `none` (ban everything), `safe` (shebang + ESLint inline config), `docs` (`safe` plus `FIX`/`TODO`, machine directives, and multiline JSDoc that carries a block tag or documents a property).
+One config per policy, under the policy's own name. `docs-report` is hyphenated, so it needs the bracket form: `commentRules.configs["docs-report"]`.
+
+Policies: `none` (ban everything), `safe` (shebang + ESLint inline config), `docs` (`safe` plus `FIX`/`TODO`, machine directives, and multiline JSDoc that carries a block tag or documents a property), `docs-report` (`docs`, reporting instead of deleting).
 
 ### Custom entries
 
@@ -99,6 +101,7 @@ rules: {
 | Policy `none` | option `"none"` | yes |
 | Policy `safe` | option `"safe"` | yes |
 | Policy `docs` | option `"docs"` | yes |
+| Policy `docs-report` | option `"docs-report"` | yes |
 | Schema: missing option | throws | yes |
 | Schema: unknown policy | throws | yes |
 | Schema: unknown key | throws | yes |
@@ -111,6 +114,7 @@ rules: {
 | `none` | nothing |
 | `safe` | shebang; ESLint inline config (`eslint-disable*`, `globals`, `exported`, …) |
 | `docs` | `safe`, plus `FIX`/`TODO` at start (leading `*` decoration allowed), markers (`@ts-expect-error`, `prettier-ignore`, `istanbul ignore`, TypeScript's `/// <reference …>`, …), and the two JSDoc cases below |
+| `docs-report` | the same as `docs`; what `docs` deletes, this reports. Deletion is the one fix whose output cannot be recovered from its input, so a project running an autofix pass over comment prose takes this one |
 
 `docs` permits a multiline JSDoc block on two grounds, and prose in JSDoc delimiters satisfies neither:
 

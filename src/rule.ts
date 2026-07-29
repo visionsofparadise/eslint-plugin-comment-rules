@@ -7,7 +7,7 @@ import type { Rule, SourceCode } from "eslint";
 import type { Comment } from "estree";
 
 const positionEnum = ["above", "beside", "file-start", "dangling"] as const;
-const policyNames = ["none", "safe", "docs"] as const;
+const policyNames = ["none", "safe", "docs", "docs-report"] as const;
 const actionEnum = ["allow", "report", "delete", "replace"] as const;
 
 const entrySchema = {
