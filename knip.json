@@ -1,7 +1,12 @@
 {
 	"$schema": "https://unpkg.com/knip@6/schema.json",
-	"entry": ["src/index.ts"],
 	"project": ["src/**/*.{ts,tsx}"],
 	"ignore": [],
-	"ignoreDependencies": ["prettier", "eslint-plugin-comment-rules"]
+	"ignoreDependencies": [
+		"prettier",
+		"eslint-plugin-comment-rules",
+		"textlint-filter-rule-comments",
+		"textlint-rule-no-dead-link",
+		"@commitlint/cli"
+	]
 }

@@ -1,9 +1,9 @@
-**/archive/**
 **/node_modules/**
 **/.*/**
 **/dist/**
 **/out/**
 **/build/**
 **/coverage/**
-scratch/
+**/.scratch/**
+**/scratch/**
 tmp_*

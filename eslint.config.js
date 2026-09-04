@@ -2,6 +2,7 @@ import { fileURLToPath } from "node:url";
 
 import { includeIgnoreFile } from "@eslint/compat";
 import js from "@eslint/js";
+import html from "@html-eslint/eslint-plugin";
 import stylistic from "@stylistic/eslint-plugin";
 import barrelFiles from "eslint-plugin-barrel-files";
 import checkFile from "eslint-plugin-check-file";
@@ -57,6 +58,7 @@ export default tseslint.config(
 			"comment-rules": commentRules,
 		},
 		settings: {
+			...importX.flatConfigs.typescript.settings,
 			"import-x/resolver": {
 				typescript: { alwaysTryTypes: true },
 			},
@@ -65,7 +67,7 @@ export default tseslint.config(
 			"prefer-arrow-callback": "error",
 			"arrow-body-style": ["error", "as-needed"],
 
-			"comment-rules/no-restricted-comments": ["error", "docs"],
+			"comment-rules/no-restricted-comments": ["error", "docs-report"],
 
 			"@typescript-eslint/naming-convention": [
 				"error",
@@ -222,7 +224,11 @@ export default tseslint.config(
 				"var",
 			],
 
-			"import-x/extensions": ["error", "never", { pattern: { css: "always" }, ignorePackages: true }],
+			"import-x/extensions": [
+				"error",
+				"never",
+				{ pattern: { css: "always", json: "always" }, ignorePackages: true },
+			],
 			"import-x/no-useless-path-segments": ["error", { noUselessIndex: true }],
 			"import-x/no-cycle": "error",
 			"import-x/order": [
@@ -283,6 +289,22 @@ export default tseslint.config(
 	},
 
 	{
+		files: ["**/*.html"],
+		...html.configs["flat/recommended"],
+		rules: {
+			...tseslint.configs.disableTypeChecked.rules,
+			...html.configs["flat/recommended"].rules,
+
+			"@html-eslint/indent": "off",
+			"@html-eslint/quotes": "off",
+			"@html-eslint/attrs-newline": "off",
+			"@html-eslint/element-newline": "off",
+			"@html-eslint/no-extra-spacing-tags": "off",
+			"@html-eslint/require-closing-tags": "off",
+		},
+	},
+
+	{
 		files: ["**/src/index.ts", "**/src/index.tsx"],
 		rules: {
 			"barrel-files/avoid-barrel-files": "off",
@@ -293,6 +315,16 @@ export default tseslint.config(
 	{
 		files: ["**/*.js", "**/*.mjs", "**/*.cjs"],
 		...tseslint.configs.disableTypeChecked,
+		languageOptions: {
+			globals: {
+				...globals.node,
+				...globals.es2022,
+			},
+			parserOptions: {
+				project: null,
+				projectService: false,
+			},
+		},
 		rules: {
 			...tseslint.configs.disableTypeChecked.rules,
 			"prefer-arrow-callback": "error",
